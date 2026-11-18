@@ -1,0 +1,33 @@
+﻿my\_package
+===========
+
+.. automodule:: my_package
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   my_package.my_module
+   my_package.osm_snapshot
+   my_package.research_quality
+
