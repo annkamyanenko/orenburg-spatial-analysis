@@ -43,6 +43,11 @@ ENV/
 /data/orenburg/
 *.osm.pbf
 *.osm.pbf.part
+/submission/artifacts/
+*.mp4
+*.mov
+*.webm
+*.mkv
 
 # Temporary and machine-specific files
 *.tmp

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сценарное моделирование рекреационной обеспеченности Оренбурга</title>
+  <link rel="stylesheet" href="shared/leaflet.css">
+  <link rel="stylesheet" href="shared/style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+  <script defer src="shared/leaflet.js"></script>
+  <script defer src="shared/data.js"></script>
+  <script defer src="shared/basemaps.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="top"><div class="brand"><span class="brand-mark" aria-hidden="true">◇</span><div>
+    <h1>Сценарное моделирование рекреационной обеспеченности Оренбурга</h1>
+    <span class="sub">Практика № 3 · 2 233 квартала</span></div></div>
+    <button class="button" id="method-open">Методология</button>
+  </header>
+  <nav id="views" aria-label="Режим карты">
+    <button data-view="base">Исходное состояние</button><button data-view="scenario">Сценарий</button><button data-view="change">Изменение</button>
+  </nav>
+  <main id="workspace">
+    <aside id="analytics"><header class="panel-head"><span>Сценарии</span><button class="icon" data-panel="analytics" aria-label="Свернуть сценарии">‹</button></header>
+      <div class="panel-body">
+        <label for="mode">Режим доступа</label>
+        <select id="mode"><option value="walk">Пешком · до 1000 м</option><option value="transit">Автомобиль · до 10 мин</option></select>
+        <label for="preset">Вариант размещения</label>
+        <select id="preset"><option value="A">А · один объект, 6000 м²</option><option value="B">Б · два объекта по 3000 м²</option><option value="V">В · автоматический подбор</option></select>
+        <p class="muted" id="preset-note"></p>
+        <div id="objects"></div>
+        <button class="button" id="add">Добавить в выбранный квартал</button>
+        <label for="reason">Обоснование выбора</label><textarea id="reason" rows="3" maxlength="400" placeholder="Укажите, какие слои повлияли на выбор"></textarea>
+        <div class="actions"><button class="button primary" id="calculate">Рассчитать сценарий</button><button class="button" id="reset">Сбросить</button></div>
+        <section class="legend">
+          <h3>Автоматический подбор</h3><label for="area">Площадь одного объекта, м²</label>
+          <input id="area" type="number" min="1" step="1" value="6000">
+          <div class="actions"><button class="button" id="auto">Проверить все кварталы</button></div>
+        </section>
+        <p role="status" id="status"></p><progress id="progress" hidden></progress>
+        <div class="cards" id="cards"></div>
+        <div class="actions"><button class="button" id="save" disabled>Сохранить сценарий</button><button class="button" id="export">Экспорт CSV</button></div>
+      </div>
+    </aside>
+    <section id="map-area" aria-label="Карта Оренбурга">
+      <div id="map"></div><div class="map-tools">
+        <button class="button reopen" data-panel="analytics" hidden>Сценарии</button>
+        <button class="button" id="fit">Весь город</button>
+        <button class="button reopen" data-panel="layers" hidden>Слои</button>
+      </div><div id="map-status" role="status"></div>
+      <div id="selection" class="selection" hidden><header class="panel-head"><h3 id="selected-title"></h3><button id="clear-selection" class="icon" aria-label="Закрыть">×</button></header><dl id="details"></dl></div>
+    </section>
+    <aside id="layers"><header class="panel-head"><span>Слои карты</span><button class="icon" data-panel="layers" aria-label="Свернуть слои">›</button></header>
+      <div class="panel-body">
+        <label for="base">Подложка</label><select id="base"><option value="dark">Тёмная · локальная</option><option value="light">Светлая · локальная</option><option value="satellite">Спутниковая · NASA</option><option value="none">Без подложки</option></select>
+        <div id="layer-controls"></div>
+        <label for="zones">Функциональные зоны генплана</label><input id="zones" type="file" accept=".json,.geojson,application/geo+json">
+        <p class="muted" id="zone-note">Открытый вектор не найден. Подключите GeoJSON при наличии.</p>
+        <section class="legend"><h3 id="legend-title">Дефицит, м²</h3><div id="legend"></div></section>
+      </div>
+    </aside>
+  </main>
+  <section class="tables">
+    <details open><summary>Сравнение сохранённых сценариев</summary><div class="table-scroll"><table id="comparison"></table></div></details>
+    <details id="rank-details"><summary>Рейтинг автоматического подбора</summary><p id="rank-status" class="muted">Запустите автоматический подбор.</p><button class="button" id="rank-export" disabled>Экспорт рейтинга CSV</button><div class="table-scroll"><table id="ranking"></table></div></details>
+    <details><summary>Таблица по всем кварталам</summary><div class="table-scroll"><table id="quarters"></table></div></details>
+  </section>
+  <footer>Практика № 3 · исходная выгрузка 8d64d1206ffa9bd94e07cad3</footer>
+  <dialog id="method"><header class="panel-head"><h2>Методология</h2><form method="dialog"><button class="icon" aria-label="Закрыть">×</button></form></header>
+    <div class="method-body">
+      <p>Спрос квартала — калиброванное население × 11 м². Ресурс распределяется по конкурентной модели BlocksNet в пределах 1000 м пешком или 10 минут на автомобиле. Итоговый дефицит и удовлетворение рассчитаны по кварталам, прошедшим привязку в выбранном режиме. Для остальных результат неизвестен.</p>
+      <p>Условный вход нового объекта — ближайший к внутренней репрезентативной точке квартала узел пешей сети внутри квартала или в 15 м от него. Для автомобиля тот же вход привязывается к автомобильной сети в пределах 100 м. Сетевой маршрут учитывает направленность. В пешем режиме добавляются расстояния привязки, как в практике № 2.</p>
+      <p>Подбор квартала — предварительное моделирование. Выбор конкретного участка и допустимость строительства требуют отдельного обоснования. Клиентский слой генплана и водно-зелёный каркас используются только при ручном обосновании.</p>
+      <p>Приречной буфер условен, городской контур верифицирован не полностью. Население откалибровано. В OSM возможны пропуски. Зарегистрированные и потенциальные входы разделены. Автомобильное время расчётное, рекреационные пороги рабочие. Цифровой анализ выявляет материально-пространственные предпосылки локальной идентичности. Подтверждение идентичности требует социокультурной верификации.</p>
+    </div>
+  </dialog>
+</body>
+</html>
