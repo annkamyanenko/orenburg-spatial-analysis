@@ -11,7 +11,7 @@ authors = [
 description = "IDU research package boilerplate"
 readme = "README.rst"
 requires-python = ">=3.10"
-license = { file = "LICENCE" }
+license = { file = "LICENSE" }
 
 dependencies = [ # здесь необходимо вести все устанавливаемые зависимости: пакеты, которые необходимы для адекватной работы вашей библиотеки
     "geopandas>=1.0.0,<2.0.0",
@@ -32,6 +32,22 @@ version_scheme = "post-release"
 local_scheme = "no-local-version"
 
 [project.optional-dependencies]
+research = [
+    "blocksnet[torch]==1.0.0a9",
+    "folium==0.14.0",
+    "ipykernel",
+    "jinja2",
+    "networkx",
+    "numpy",
+    "osmnx>=2,<3",
+    "pandas",
+    "pyarrow",
+    "pyogrio",
+    "pyproj",
+    "scipy",
+    "shapely>=2.1,<3",
+]
+
 dev = [ # зависимости, необходимые для разработки библиотеки, но не для её использования
     "black[jupyter]==22.3",     # Форматирование, включая поддержку Jupyter
     "mapclassify==2.6.1",       # Визуализация данных в Jupyter

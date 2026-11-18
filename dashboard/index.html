@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Интерактивный атлас кварталов, природного каркаса и доступности Оренбурга.">
+  <title>Пространственная аналитика Оренбурга</title>
+  <link rel="stylesheet" href="leaflet.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+  <script defer src="leaflet.js"></script>
+  <script defer src="data.js"></script>
+  <script defer src="basemaps.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">◇</span>
+      <div><h1>Пространственная аналитика Оренбурга</h1><span class="sub">Практика № 2 · Исследовательский атлас</span></div>
+    </div>
+    <button id="method-open" class="button">Методология</button>
+  </header>
+  <nav id="sections" aria-label="Аналитические разделы"></nav>
+  <main id="workspace">
+    <aside id="analytics" aria-label="Аналитика">
+      <header class="panel-head"><span>Аналитика</span><button class="icon" data-panel="analytics" aria-label="Свернуть аналитику">‹</button></header>
+      <div class="panel-body">
+        <h2 id="section-title"></h2><p id="section-note" class="muted"></p>
+        <div id="cards" class="cards"></div>
+        <section class="chart"><h3 id="chart-title"></h3><p id="chart-note" class="muted"></p><div id="chart"></div></section>
+      </div>
+    </aside>
+    <section id="map-area" aria-label="Карта Оренбурга">
+      <div id="map"></div>
+      <div class="map-tools">
+        <button class="button reopen" data-panel="analytics" aria-controls="analytics" hidden>Аналитика</button>
+        <button id="fit" class="button" title="Показать всю территорию исследования">Весь город</button>
+        <button class="button reopen" data-panel="layers" aria-controls="layers" hidden>Слои</button>
+      </div>
+      <div id="map-status" role="status"></div>
+      <div id="selection" class="selection" hidden>
+        <header class="panel-head"><h3 id="selected-title"></h3><button id="clear-selection" class="icon" aria-label="Закрыть карточку квартала">×</button></header>
+        <dl id="details"></dl>
+      </div>
+    </section>
+    <aside id="layers" aria-label="Управление слоями">
+      <header class="panel-head"><span>Слои карты</span><button class="icon" data-panel="layers" aria-label="Свернуть слои">›</button></header>
+      <div class="panel-body">
+        <label for="base">Подложка</label>
+        <select id="base"><option value="dark">Тёмная · локальная</option><option value="light">Светлая · локальная</option><option value="satellite">Спутниковая</option><option value="none">Без подложки</option></select>
+        <label for="metric">Показатель кварталов</label><select id="metric"></select>
+        <div id="layer-controls"></div>
+        <section class="legend"><h3>Легенда</h3><p id="legend-title" class="muted"></p><div id="legend"></div></section>
+      </div>
+    </aside>
+  </main>
+  <footer><span>Оренбург · результаты практики № 2</span><span id="dataset"></span></footer>
+  <dialog id="method">
+    <header class="panel-head"><h2>Методология и ограничения</h2><form method="dialog"><button class="icon" aria-label="Закрыть">×</button></form></header>
+    <div class="method-body">
+      <p><strong>Цифровой пространственный анализ выявляет материально-пространственные предпосылки формирования локальной идентичности. Для подтверждения самой идентичности нужна социокультурная верификация.</strong></p>
+      <ul>
+        <li>Приречные кварталы выделены по условному буферу Урала и Сакмары. Буфер задаёт область анализа. Официальная граница поймы требует отдельной проверки.</li>
+        <li>Городской контур взят из сохранённого OSM. Его совпадение с официальной границей населённого пункта подтверждено не полностью.</li>
+        <li>Население оценено по зданиям и пропорционально приведено к заданному общегородскому итогу. Квартальные оценки зависят от заполненности тегов OSM.</li>
+        <li>Зарегистрированные входы взяты из инвентаря. Потенциальные точки получены на пересечениях пешеходной сети с границами объектов и требуют проверки.</li>
+        <li>Автомобильное время рассчитывается по длине и скорости рёбер графа. Заторы и поворотные запреты в модели отсутствуют.</li>
+        <li>Привязка репрезентативной точки квартала ограничена порогом. Доля достижимой площади от площади всех кварталов и доля среди привязанных имеют разные знаменатели.</li>
+        <li>Снимок OpenStreetMap может содержать пропуски. Ноль в инвентаре означает отсутствие записей в использованной выгрузке. Пустые значения показателей выделены отдельно.</li>
+        <li>Рекреационные пороги используются как рабочие. Полная актуальность таблицы 36 местных нормативов требует сверки.</li>
+      </ul>
+      <p id="parameters" class="muted"></p>
+    </div>
+  </dialog>
+  <noscript>Для интерактивной карты включите JavaScript.</noscript>
+</body>
+</html>

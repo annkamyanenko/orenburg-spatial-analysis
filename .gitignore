@@ -33,9 +33,25 @@ instance/
 
 # Environments
 .env
+.env.*
+!.env.example
 .venv/
 venv/
 ENV/
+
+# Local Orenburg inputs, intermediate data and exports for practice 3
+/data/orenburg/
+*.osm.pbf
+*.osm.pbf.part
+
+# Temporary and machine-specific files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.part
+Thumbs.db
+.DS_Store
 
 # MyPy
 .mypy_cache/

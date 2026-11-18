@@ -111,3 +111,10 @@ Publications
    :target: https://github.com/psf/black
 
 .. readme-end
+
+Практическое занятие № 2 — Оренбург
+===================================
+
+* `Дашборд <dashboard/index.html>`_
+* `Запуск дашборда <dashboard/README.md>`_
+* `Воспроизведение исследования <ORENBURG_RESEARCH.md>`_
