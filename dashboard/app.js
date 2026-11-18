@@ -32,6 +32,9 @@ const metrics = {
   population_ha:num("Плотность населения", "чел./га"), population:num("Население после калибровки", "чел.", 0),
   population_original:num("Исходная оценка населения", "чел.", 0),
   fsi:num("Интенсивность застройки · FSI", "м²/м²", 2), gsi:share("Доля пятен зданий · GSI"), l:num("Средняя этажность", "эт."), mxi:share("Жилая доля поэтажной площади"),
+  osr:num("Свободная площадь на м² поэтажной площади · OSR", "м²/м²", 2),
+  share_living:num("Жилая площадь на м² пятен зданий", "м²/м²", 2),
+  share_non_living:num("Нежилая площадь на м² пятен зданий", "м²/м²", 2),
   spacematrix:cat("Морфотип Spacematrix", v => v.split(" ").map(word => morphWords[word] || word).join(" ")),
   strelka:cat("Морфотип Strelka", v => strelkaNames[v] || v),
   land_use:cat("Преобладающее землепользование", v => landNames[v] || v), land_use_unknown:share("Неизвестное использование площади"),
@@ -69,7 +72,7 @@ const sections = [
   section("Обзор","Оренбург","Кварталы города и условная приречная зона Урала и Сакмары.",["population_ha","population","population_original","riparian"],["water","riparian"],() => [
     stat("Кварталы",fmt(props.length)),stat("Население · калибр.",fmt(summary.population)),
     stat("Площадь кварталов",km2(sum("site_area"))),stat("Приречные кварталы",fmt(props.filter(d=>d.riparian).length))]),
-  section("Морфология","Морфология и плотность","FSI — поэтажная площадь на м² квартала. GSI — доля пятен зданий. Этажность взвешена по пятнам.",["fsi","gsi","l","mxi","spacematrix","strelka"],["water"],() => [
+  section("Морфология","Морфология и плотность","FSI — поэтажная площадь на м² квартала. GSI — доля пятен зданий. Этажность взвешена по пятнам.",["fsi","gsi","l","mxi","osr","share_living","share_non_living","spacematrix","strelka"],["water"],() => [
     stat("Медиана FSI",fmt(medianOf("fsi"),2)),stat("Медиана GSI",percent(medianOf("gsi"))),
     stat("Медианная этажность",metrics.l.print(medianOf("l"))),stat("С морфотипом",fmt(props.filter(d=>d.spacematrix!=null).length))]),
   section("Землепользование","Землепользование","Класс квартала соответствует крупнейшей выявленной доле по контурам OSM. Непокрытая площадь учитывается отдельно.",["land_use","land_use_unknown"],["water"],() => [

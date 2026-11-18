@@ -10,6 +10,7 @@ from statistics import median
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT.parent / "data/orenburg/results/8d64d1206ffa9bd94e07cad3"
 FIELDS = """block_id stable_id site_area population population_original population_ha fsi gsi l mxi
+osr share_living share_non_living
 spacematrix strelka land_use land_use_unknown riparian riparian_share green_share attractor_count
 attractors_km2 transport_bound transport_snap_m reachable_area_share reachable_bound_area_share
 reachable_area_time_min walk_nearest transit_nearest walk_origin_bound transit_origin_bound
